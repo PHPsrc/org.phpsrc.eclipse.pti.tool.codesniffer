@@ -31,6 +31,8 @@ import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.viewers.ColumnLayoutData;
+import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -213,7 +215,10 @@ public class PHPCodeSnifferConfigurationBlock extends AbstractPEARPHPToolConfigu
 
 		String[] columnsHeaders = new String[] { "Name", "Custom", "Path" };
 
-		fStandardsList.setTableColumns(new ListDialogField.ColumnsDescription(columnsHeaders, true));
+		ColumnLayoutData[] data = new ColumnLayoutData[] { new ColumnWeightData(2), new ColumnWeightData(1),
+				new ColumnWeightData(4) };
+
+		fStandardsList.setTableColumns(new ListDialogField.ColumnsDescription(data, columnsHeaders, true));
 		fStandardsList.setViewerSorter(new ViewerSorter());
 
 		unpackStandards();
