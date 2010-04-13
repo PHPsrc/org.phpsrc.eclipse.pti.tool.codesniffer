@@ -48,10 +48,13 @@ import org.eclipse.php.internal.ui.wizards.fields.IListAdapter;
 import org.eclipse.php.internal.ui.wizards.fields.ListDialogField;
 import org.eclipse.php.internal.ui.wizards.fields.StringDialogField;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
@@ -221,8 +224,6 @@ public class PHPCodeSnifferConfigurationBlock extends AbstractPEARPHPToolConfigu
 		fStandardsList.setTableColumns(new ListDialogField.ColumnsDescription(data, columnsHeaders, true));
 		fStandardsList.setViewerSorter(new ViewerSorter());
 
-		unpackStandards();
-
 		if (fStandardsList.getSize() > 0) {
 			fStandardsList.selectFirstElement();
 		} else {
@@ -252,9 +253,8 @@ public class PHPCodeSnifferConfigurationBlock extends AbstractPEARPHPToolConfigu
 
 	private static Key[] getKeys() {
 		return new Key[] { PREF_PHP_EXECUTABLE, PREF_PEAR_LIBRARY, PREF_DEBUG_PRINT_OUTPUT, PREF_CUSTOM_STANDARD_NAMES,
-				PREF_CUSTOM_STANDARD_PATHS, PREF_DEFAULT_STANDARD_NAME, PREF_DEFAULT_STANDARD_PATH,
-				PREF_ACTIVE_STANDARDS, PREF_DEFAULT_TAB_WITH, PREF_FILE_EXTENSIONS, PREF_IGNORE_PATTERN,
-				PREF_IGNORE_SNIFFS };
+				PREF_CUSTOM_STANDARD_PATHS, PREF_ACTIVE_STANDARDS, PREF_DEFAULT_TAB_WITH, PREF_FILE_EXTENSIONS,
+				PREF_IGNORE_PATTERN, PREF_IGNORE_SNIFFS };
 	}
 
 	protected Composite createToolContents(Composite parent) {
@@ -315,6 +315,16 @@ public class PHPCodeSnifferConfigurationBlock extends AbstractPEARPHPToolConfigu
 
 		createDialogFieldsWithInfoText(folder, new DialogField[] { fIgnoreSniffs }, "Ignore Sniffs",
 				new String[] { "Sniffs are separated by a comma" });
+
+		unpackStandards(pearLibraryCombo.getText());
+		pearLibraryCombo.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				unpackStandards(((Combo) e.widget).getText());
+			}
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
 
 		return markersGroup;
 	}
@@ -437,7 +447,7 @@ public class PHPCodeSnifferConfigurationBlock extends AbstractPEARPHPToolConfigu
 	 */
 
 	protected void updateControls() {
-		unpackStandards();
+		unpackStandards(pearLibraryCombo.getText());
 		unpackTabWidth();
 		unpackFileExtensions();
 		unpackIgnorePattern();
@@ -468,7 +478,7 @@ public class PHPCodeSnifferConfigurationBlock extends AbstractPEARPHPToolConfigu
 			fIgnoreSniffs.setText(ignoreSniffs);
 	}
 
-	private void unpackStandards() {
+	private void unpackStandards(String libName) {
 		String activeStandards = getValue(PREF_ACTIVE_STANDARDS);
 		ArrayList<String> activeList = new ArrayList<String>();
 
@@ -483,7 +493,7 @@ public class PHPCodeSnifferConfigurationBlock extends AbstractPEARPHPToolConfigu
 
 		String customStandardPrefs = getValue(PREF_CUSTOM_STANDARD_NAMES);
 
-		String[] standards = PHPCodeSnifferPlugin.getDefault().getCodeSnifferStandards();
+		String[] standards = PHPCodeSnifferPlugin.getDefault().getCodeSnifferStandards(libName);
 		String[] customStandards = {};
 		String[] customPaths = {};
 
