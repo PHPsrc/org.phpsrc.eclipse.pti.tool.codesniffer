@@ -24,4 +24,11 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Export-Package: org.phpsrc.eclipse.pti.tools.codesniffer,
- org.phpsrc.eclipse.pti.tools.codesniffer.core.preferences
+ org.phpsrc.eclipse.pti.tools.codesniffer.core,
+ org.phpsrc.eclipse.pti.tools.codesniffer.core.jobs,
+ org.phpsrc.eclipse.pti.tools.codesniffer.core.preferences,
+ org.phpsrc.eclipse.pti.tools.codesniffer.core.problem,
+ org.phpsrc.eclipse.pti.tools.codesniffer.ui.actions,
+ org.phpsrc.eclipse.pti.tools.codesniffer.ui.correction,
+ org.phpsrc.eclipse.pti.tools.codesniffer.ui.preferences,
+ org.phpsrc.eclipse.pti.tools.codesniffer.validator
