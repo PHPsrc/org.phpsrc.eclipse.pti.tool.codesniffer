@@ -16,6 +16,8 @@
  */
 
 error_reporting(E_ALL | E_STRICT);
+ini_set('display_errors', '1');
+
 ob_start();
 if (is_file(dirname(__FILE__).'/../CodeSniffer/CLI.php') === true) {
     include_once dirname(__FILE__).'/../CodeSniffer/CLI.php';
