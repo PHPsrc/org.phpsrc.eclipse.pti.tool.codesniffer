@@ -16,7 +16,8 @@
  */
 
 error_reporting(E_ALL | E_STRICT);
-ob_start();
+ini_set('display_errors', '1');
+
 if (is_file(dirname(__FILE__).'/../CodeSniffer/CLI.php') === true) {
     include_once dirname(__FILE__).'/../CodeSniffer/CLI.php';
 } else {
@@ -27,12 +28,8 @@ $phpcs = new PHP_CodeSniffer_CLI();
 $phpcs->checkRequirements();
 
 $numErrors = $phpcs->process();
-$sOutput = ob_get_flush();
-
 if ($numErrors === 0) {
     exit(0);
 } else {
     exit(1);
 }
-
-?>
