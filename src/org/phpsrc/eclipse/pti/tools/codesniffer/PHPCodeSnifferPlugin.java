@@ -106,8 +106,8 @@ public class PHPCodeSnifferPlugin extends AbstractPHPToolPlugin {
 			if (!standardPath.exists())
 				standardPath = new File(libPath + "/PEAR/PHP/CodeSniffer/Standards");
 		} else {
-			standardPath = new File(PHPLibraryPEARPlugin.getDefault().resolvePluginResource(DEFAULT_PEAR_LIB_PATH)
-					.toPortableString());
+			standardPath = new File(PHPLibraryPEARPlugin.getDefault()
+					.resolvePluginResource(DEFAULT_PEAR_LIB_PATH).toPortableString());
 		}
 
 		if (standardPath == null || !standardPath.exists())
@@ -115,7 +115,8 @@ public class PHPCodeSnifferPlugin extends AbstractPHPToolPlugin {
 
 		File[] dirs = standardPath.listFiles(new FileFilter() {
 			public boolean accept(File f) {
-				return f.isDirectory() && !f.getName().startsWith(".");
+				return f.isDirectory() && !f.getName().startsWith(".")
+						&& !f.getName().toLowerCase().equals("generic");
 			}
 		});
 
@@ -132,7 +133,8 @@ public class PHPCodeSnifferPlugin extends AbstractPHPToolPlugin {
 
 	public IPath[] getPluginIncludePaths(IProject project) {
 		PHPCodeSnifferPreferences prefs = PHPCodeSnifferPreferencesFactory.factory(project);
-		IPath[] pearPaths = PHPLibraryPEARPlugin.getDefault().getPluginIncludePaths(prefs.getPearLibraryName());
+		IPath[] pearPaths = PHPLibraryPEARPlugin.getDefault().getPluginIncludePaths(
+				prefs.getPearLibraryName());
 
 		IPath[] includePaths = new IPath[pearPaths.length + 1];
 		includePaths[0] = resolvePluginResource("/php/tools");
