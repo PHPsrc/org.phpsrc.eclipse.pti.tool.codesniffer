@@ -170,9 +170,11 @@ public class StandardInputDialog extends StatusDialog {
 		if (newPath != null && newPath.length() > 0) {
 			IPath path = Path.fromOSString(newPath);
 			if (path != null) {
-				File codingStandard = new File(newPath + File.separatorChar + path.lastSegment() + "CodingStandard.php");
-				if (!codingStandard.exists()) {
-					status.setError("Missing standard file " + path.lastSegment() + "CodingStandard.php");
+				File codingStandardPHP = new File(newPath + File.separatorChar + path.lastSegment()
+						+ "CodingStandard.php");
+				File codingStandardXML = new File(newPath + File.separatorChar + "ruleset.xml");
+				if (!codingStandardPHP.exists() && !codingStandardXML.exists()) {
+					status.setError("Missing standard file " + path.lastSegment() + "CodingStandard.php or ruleset.xml");
 				}
 			}
 		}
