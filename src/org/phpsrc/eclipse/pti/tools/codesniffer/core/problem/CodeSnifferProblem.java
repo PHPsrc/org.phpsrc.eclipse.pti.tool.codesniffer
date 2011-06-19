@@ -9,13 +9,15 @@
 package org.phpsrc.eclipse.pti.tools.codesniffer.core.problem;
 
 import org.eclipse.dltk.compiler.problem.DefaultProblem;
+import org.eclipse.dltk.compiler.problem.IProblemIdentifier;
+import org.eclipse.dltk.compiler.problem.ProblemSeverity;
 
 public class CodeSnifferProblem extends DefaultProblem {
 
 	protected String source;
 
-	public CodeSnifferProblem(String originatingFileName, String message, int id, String[] stringArguments,
-			int severity, int startPosition, int endPosition, int line, int column, String source) {
+	public CodeSnifferProblem(String originatingFileName, String message, IProblemIdentifier id, String[] stringArguments,
+			ProblemSeverity severity, int startPosition, int endPosition, int line, int column, String source) {
 		super(originatingFileName, message, id, stringArguments, severity, startPosition, endPosition, line, column);
 		this.source = source;
 	}

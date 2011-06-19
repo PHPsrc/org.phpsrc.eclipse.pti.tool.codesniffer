@@ -20,8 +20,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.dltk.compiler.problem.DefaultProblemIdentifier;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
+import org.eclipse.dltk.compiler.problem.ProblemSeverity;
 import org.phpsrc.eclipse.pti.core.launching.OperatingSystem;
 import org.phpsrc.eclipse.pti.core.launching.PHPToolLauncher;
 import org.phpsrc.eclipse.pti.core.php.inifile.INIFileEntry;
@@ -146,9 +148,9 @@ public class PHPCodeSniffer extends AbstractPHPTool {
 
 					Document doc = parser.getDocument();
 					problems.addAll(createProblemMarker(file, doc.getElementsByTagName("error"),
-							ProblemSeverities.Error, tabWidth, prefs.getIgnoreSniffs()));
+							ProblemSeverity.ERROR, tabWidth, prefs.getIgnoreSniffs()));
 					problems.addAll(createProblemMarker(file, doc.getElementsByTagName("warning"),
-							ProblemSeverities.Warning, tabWidth, prefs.getIgnoreSniffs()));
+							ProblemSeverity.WARNING, tabWidth, prefs.getIgnoreSniffs()));
 				}
 			}
 		} catch (Exception e) {
@@ -158,7 +160,7 @@ public class PHPCodeSniffer extends AbstractPHPTool {
 		return problems.toArray(new IProblem[0]);
 	}
 
-	protected ArrayList<IProblem> createProblemMarker(ISourceFile file, NodeList list, int type, int tabWidth,
+	protected ArrayList<IProblem> createProblemMarker(ISourceFile file, NodeList list, ProblemSeverity type, int tabWidth,
 			String[] ignoreSniffs) {
 		if (tabWidth <= 0)
 			tabWidth = 2;
@@ -192,8 +194,10 @@ public class PHPCodeSniffer extends AbstractPHPTool {
 			if (column > 1)
 				lineStart += (column - 1 - (file.lineStartTabCount(lineNr) * (tabWidth - 1)));
 
+			System.out.println(IProblem.Syntax);
+			System.out.println(DefaultProblemIdentifier.decode(IProblem.Syntax));
 			problems.add(new CodeSnifferProblem(file.getFile().getFullPath().toOSString(), item.getTextContent(),
-					IProblem.Syntax, new String[0], type, lineStart, file.lineEnd(lineNr), lineNr, column, source));
+					DefaultProblemIdentifier.decode(IProblem.Syntax), new String[0], type, lineStart, file.lineEnd(lineNr), lineNr, column, source));
 		}
 
 		return problems;
